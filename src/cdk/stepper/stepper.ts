@@ -153,10 +153,27 @@ export class CdkStepper implements OnDestroy {
   /** The index of the selected step. */
   @Input()
   get selectedIndex() { return this._selectedIndex; }
+
+    /**
+     * a workaround for linear steppers with optional stepControls
+     * @param oldIndex
+     * @param newIndex
+     * @returns true if the jump is not permitted for linear stepper
+     */
+  _jumpIsIllegal(oldIndex: number, newIndex: number): boolean {
+      return (this._linear
+          && !this._steps.toArray()[this._selectedIndex].stepControl
+          && (newIndex - oldIndex > 1 )
+          && (!this._steps.toArray()[newIndex].completed)
+          && (!this._steps.toArray()[newIndex - 1].completed));
+  }
   set selectedIndex(index: number) {
     if (this._steps) {
-      if (this._anyControlsInvalidOrPending(index) || index < this._selectedIndex &&
-          !this._steps.toArray()[index].editable) {
+      // if the stepControl is not set for the current step, we think that it's always valid
+      if (this._anyControlsInvalidOrPending(index)
+          || index < this._selectedIndex &&  !this._steps.toArray()[index].editable
+          // linear stepper and current step doesn't have stepControl
+          || this._jumpIsIllegal(this._selectedIndex, index) ) {
         // remove focus from clicked step header if the step is not able to be selected
         this._stepHeader.toArray()[index].nativeElement.blur();
       } else if (this._selectedIndex != index) {

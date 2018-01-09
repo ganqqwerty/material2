@@ -42,6 +42,21 @@
     </mat-step>
   </mat-vertical-stepper>
 </form>
+<h3>Linear Horizontal Stepper Demo without any bullshit forms</h3>
+<mat-horizontal-stepper  [linear]="true" >
+  <mat-step label="Step 1">
+      <p>one</p>
+  </mat-step>
+  <mat-step label="Step 2">
+    two
+  </mat-step>
+  <mat-step label="Step 3">
+    three
+  </mat-step>
+  <mat-step label="Step 4">
+    four
+  </mat-step>
+</mat-horizontal-stepper>
 
 <h3>Linear Horizontal Stepper Demo using a different form for each step</h3>
 <mat-horizontal-stepper [linear]="!isNonLinear">
